@@ -17,8 +17,8 @@ def read_json(json_file: str)->list:
     tweets_data = []
     for tweets in open(json_file,'r'):
         tweets_data.append(json.loads(tweets))
-    
-    
+
+
     return len(tweets_data), tweets_data
 
 class TweetDfExtractor:
@@ -43,20 +43,20 @@ class TweetDfExtractor:
     def find_full_text(self)->list:
         text = []
         for tweet in self.tweets_list:
-            if 'retweeted_status' in tweet and 'extended_tweet' in tweet['retweeted_status']:
+            if 'retweeted_status' in tweet.keys() and 'extended_tweet' in tweet['retweeted_status'].keys():
                 text.append(tweet['retweeted_status']['extended_tweet']['full_text'])
             else: text.append('Empty')
 
         return text
        
-    def find_sentiments(self, text)->list:
+    def find_sentiments(self, text:list)->list:
         polarity, subjectivity = [], []
         for tweet in text:
             blob = TextBlob(tweet)
             sentiment = blob.sentiment
             polarity.append(sentiment.polarity)
             subjectivity.append(sentiment.subjectivity)
-            
+
         return polarity, subjectivity
 
     def find_created_time(self)->list:
@@ -69,21 +69,18 @@ class TweetDfExtractor:
 
         source = [x['source'] for x in self.tweets_list]
 
-        source = source
-
         return source
 
     def find_screen_name(self)->list:
-
         screen_name = [x['user']['screen_name'] for x in self.tweets_list]
 
-        screen_name = screen_name
+        return screen_name
 
     def find_followers_count(self)->list:
 
         followers_count = [x['user']['followers_count'] for x in self.tweets_list]
 
-        followers_count = followers_count
+        return followers_count
 
     def find_friends_count(self)->list:
         
@@ -100,17 +97,36 @@ class TweetDfExtractor:
         return is_sensitive
 
     def find_favourite_count(self)->list:
-        
-        pass
+        favorite_count = []
+        for tweet in self.tweets_list:
+            if 'retweeted_status' in tweet.keys():
+                favorite_count.append(tweet['retweeted_status']['favorite_count'])
+            else: favorite_count.append(0)
+
+        return favorite_count
 
     def find_retweet_count(self)->list:
-        retweet_count = None
+
+        retweet_count = []
+        for tweet in self.tweets_list:
+            if 'retweeted_status' in tweet.keys():
+                retweet_count.append(tweet['retweeted_status']['retweet_count'])
+            else: retweet_count.append(0)
+
+        return retweet_count
 
     def find_hashtags(self)->list:
-        hashtags = None
+        hashtags = [tw.get('entities', {}).get('hashtags', None)
+                    for tw in self.tweets_list]
+
+        return hashtags
 
     def find_mentions(self)->list:
-        mentions = None
+        mentions = []
+        for tw in self.tweets_list:
+            mentions.append( ", ".join([mention['screen_name'] for mention in tw['entities']['user_mentions']]))
+
+        return mentions
 
     def find_lang(self)->list:
         
@@ -122,11 +138,10 @@ class TweetDfExtractor:
         return lang
 
     def find_location(self)->list:
-        try:
-            location = self.tweets_list['user']['location']
-        except TypeError:
-            location = ''
-        
+        location = []
+        for tweet in self.tweets_list:
+            location.append(tweet['user']['location'])
+
         return location
 
     
@@ -134,10 +149,10 @@ class TweetDfExtractor:
         
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
-        
+
         columns = ['created_at', 'source', 'original_text','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count', 
             'original_author', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place']
-        
+
         created_at = self.find_created_time()
         source = self.find_source()
         text = self.find_full_text()
@@ -158,9 +173,21 @@ class TweetDfExtractor:
         if save:
             df.to_csv('processed_tweet_data.csv', index=False)
             print('File Successfully Saved.!!!')
-        
+
         return df
 
+    def find_full_text(self)->list:
+        try:
+            retweeted_status = [x.get("retweeted_status", {}) for x in self.tweets_list]
+            text =[(x.get("extended_tweet", {})).get("full_text", None) for x in retweeted_status]
+            filtered = []
+            for x in text:
+                if x != None:
+                    filtered.append(x)
+                    text = ''.join(filtered)
+        except KeyError:
+            text = ''
+        return text
                 
 if __name__ == "__main__":
     # required column to be generated you should be creative and add more features
