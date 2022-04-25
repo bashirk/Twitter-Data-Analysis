@@ -1,6 +1,6 @@
 class Clean_Tweets:
     """
-    The PEP8 Standard AMAZING!!!
+    This class will clean up the tweets
     """
     def __init__(self, df:pd.DataFrame):
         self.df = df
