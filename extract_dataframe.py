@@ -89,10 +89,11 @@ class TweetDfExtractor:
         return friends_count
 
     def is_sensitive(self)->list:
-        try:
-            is_sensitive = [x['possibly_sensitive'] if 'retweeted_status' in tweet else None for x in self.tweets_list]
-        except KeyError:
-            is_sensitive = None
+        is_sensitive = []
+        for tweet in self.tweets_list:
+            if 'possibly_sensitive' in tweet.keys():
+                is_sensitive.append(tweet['possibly_sensitive'])
+            else: is_sensitive.append(None)
 
         return is_sensitive
 
@@ -175,7 +176,7 @@ class TweetDfExtractor:
             print('File Successfully Saved.!!!')
 
         return df
-
+"""
     def find_full_text(self)->list:
         try:
             retweeted_status = [x.get("retweeted_status", {}) for x in self.tweets_list]
@@ -188,7 +189,8 @@ class TweetDfExtractor:
         except KeyError:
             text = ''
         return text
-                
+"""
+
 if __name__ == "__main__":
     # required column to be generated you should be creative and add more features
     columns = ['created_at', 'source', 'original_text','clean_text', 'sentiment','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count', 
