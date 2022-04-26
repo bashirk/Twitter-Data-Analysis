@@ -21,9 +21,8 @@ class Clean_Tweets:
         drop duplicate rows
         """
         
-        ---
+        pass
         
-        return df
     def convert_to_datetime(self, df:pd.DataFrame)->pd.DataFrame:
         """
         convert column to datetime
@@ -56,3 +55,7 @@ class Clean_Tweets:
         df = ----
         
         return df
+
+if __name__ == "__main__":
+    twt_data = pd.read_json("data/Economic_Twitter_Data.json")
+    cleaner = CleanTweets(twt_data)
