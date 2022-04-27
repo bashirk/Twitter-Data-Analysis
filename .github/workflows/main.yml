@@ -17,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Extract the test data file
-        run: 7z x data/Economic_Twitter_Data.zip
+        run: 7z x Economic_Twitter_Data.zip
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Run tests
