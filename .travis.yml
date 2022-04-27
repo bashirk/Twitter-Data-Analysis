@@ -10,6 +10,7 @@ python:
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
+  - 7z x Economic_Twitter_Data.zip
   - pip install -r requirements.txt
 
 # cache installation
