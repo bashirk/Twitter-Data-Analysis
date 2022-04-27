@@ -199,7 +199,7 @@ if __name__ == "__main__":
     #url = 'https://drive.google.com/file/d/10Ib9ppt75IqgXilavO-7WuMcun_3hFR5/view?usp=sharing'
     #url='https://drive.google.com/uc?id=' + url.split('/')[-2]
     #_, tweets_list = read_json(url)
-    _, tweets_list = read_json("data/Economic_Twitter_Data.json")
+    _, tweets_list = read_json("Economic_Twitter_Data.json")
     tweet = TweetDfExtractor(tweets_list)
     tweet_df = tweet.get_tweet_df() 
 
