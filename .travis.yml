@@ -10,6 +10,7 @@ python:
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
+  - apt install p7zip-full p7zip-rar
   - 7z x Economic_Twitter_Data.zip
   - pip install -r requirements.txt
 
