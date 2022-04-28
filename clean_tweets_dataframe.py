@@ -1,3 +1,7 @@
+import pandas as pd
+
+twt_data = pd.read_json("data/Economic_Twitter_Data.json", lines=True)
+
 class Clean_Tweets:
     """
     This class will clean up the tweets
@@ -13,7 +17,7 @@ class Clean_Tweets:
         """
         unwanted_rows = self.df[self.df['retweet_count'] == 'retweet_count' ].index
         self.df.drop(unwanted_rows , inplace=True)
-        self.df = self.df[self.df['polarity'] != 'polarity']
+        self.df = self.df[self.df['favorite_count'] != 'favorite_count']
         
         return self.df
         
@@ -28,7 +32,6 @@ class Clean_Tweets:
         """
         convert column to datetime
         """
-        ----
         
         pass
         
@@ -41,10 +44,8 @@ class Clean_Tweets:
         convert columns like polarity, subjectivity, retweet_count
         favorite_count etc to numbers
         """
-        df['polarity'] = pd.----
-        
-        ----
-        ----
+        df['polarity'] = None
+      
         
         return df
     
@@ -53,10 +54,10 @@ class Clean_Tweets:
         remove non english tweets from lang
         """
         
-        df = ----
+        df = None
         
         return df
 
 if __name__ == "__main__":
-    twt_data = pd.read_json("data/Economic_Twitter_Data.json")
+    twt_data = pd.read_json("data/Economic_Twitter_Data.json", lines=True)
     cleaner = CleanTweets(twt_data)
