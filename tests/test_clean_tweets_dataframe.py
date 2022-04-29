@@ -1,18 +1,23 @@
 import unittest
 import pandas as pd
+import sys, os
+ 
+sys.path.append(os.path.abspath(os.path.join('../..')))
 
 from extract_dataframe import read_json
 from clean_tweets_dataframe import twt_data
 from clean_tweets_dataframe import Clean_Tweets
 
-columns = ['created_at', 'source', 'original_text','clean_text', 'sentiment','polarity','subjectivity', 'lang', 'favorite_count', 'retweet_count', 
-    'original_author', 'screen_count', 'followers_count','friends_count','possibly_sensitive', 'hashtags', 'user_mentions', 'place', 'place_coord_boundaries']
+tweets_list = read_json("data/Economic_Twitter_Data.json")
+
 
 class TestClean_Tweets(unittest.TestCase):
 
     def setUp(self) -> pd.DataFrame:
-        self.df = Clean_Tweets(twt_data)
+        self.df = tweets_list
+
+        self.df = Clean_Tweets(self.df)
 
     def test_drop_unwanted_column(self):
-        self.assertEqual(self.df.drop_unwanted_column(self.df), 0.1)
+        self.assertEqual(len(self.df.columns),len(self.df_cleanser.drop_unwanted_column(self.df).columns))
 
