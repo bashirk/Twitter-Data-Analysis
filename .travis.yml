@@ -7,7 +7,7 @@ python:
 
 before_install:
   - sudo apt install p7zip-full
-  - !wget "https://github.com/bashirk/Twitter-Data-Analysis/blob/main/data/Economic_Twitter_Data.zip?raw=true" -O Economic_Twitter_Data.zip
+  - wget "https://github.com/bashirk/Twitter-Data-Analysis/blob/main/data/Economic_Twitter_Data.zip?raw=true" -O Economic_Twitter_Data.zip
 
 # Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
